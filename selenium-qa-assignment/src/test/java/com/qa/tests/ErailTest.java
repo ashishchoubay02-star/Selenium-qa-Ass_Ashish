@@ -73,6 +73,11 @@ public class ErailTest extends BaseTest {
         Assert.assertTrue(anyMatch, "None of the expected stations were found in the dropdown");
 
         // Step 8: Dynamic date = today + 30 days (change offset any time for the interview)
+        // "Sort on Date" only renders once a "To" station is also selected (assignment
+        // screenshot shows To = "Mumbai Central" by default), so pick one first.
+        home.ensureToStationSelected("BCT");
+        ExtentReportManager.getTest().log(Status.INFO, "Ensured 'To' station selected (Mumbai Central)");
+
         int daysFromToday = Integer.parseInt(System.getProperty("dateOffset", "30"));
         home.enableSortOnDate();
         String selectedDate = home.selectDateDaysFromToday(daysFromToday);

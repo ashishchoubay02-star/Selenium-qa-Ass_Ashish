@@ -19,11 +19,12 @@ public class ErailHomePage extends BasePage {
 
     // ---------- Locators ----------
     private final By fromField = By.id("txtStationFrom");
+    private final By toField = By.id("txtStationTo");
     private final By autoSuggestList = By.cssSelector("div.autocomplete div");
-    private final By sortOnDateCheckbox = By.id("chkSortOnDate");
-    private final By dateField = By.id("txtDate");
+    private final By sortOnDateCheckbox = By.id("chkSelectDateOnly");
+    private final By dateField = By.cssSelector("#tdDateFromTo input[type='button']");
     // Calendar: each month is rendered as a table; header cell shows e.g. "Sep-22"
-    private final By calendarMonthTables = By.cssSelector("div#divCalendar table");
+    private final By calendarMonthTables = By.cssSelector("div#divCalender table");
 
     public ErailHomePage(WebDriver driver) {
         super(driver);
@@ -72,6 +73,32 @@ public class ErailHomePage extends BasePage {
         String stationName = target.getText().trim();
         target.click();
         return stationName;
+    }
+
+    /**
+     * The "Sort on Date" checkbox & calendar only render once both From and To
+     * stations are selected (see assignment screenshot: To = "Mumbai Central" by
+     * default). If "To" is still empty, pick a station for it the same way "From"
+     * is picked, so the results panel appears before Step 8 runs.
+     */
+    public void ensureToStationSelected(String query) {
+        WebElement to = waitForVisible(toField);
+        String current = to.getAttribute("value");
+        if (current != null && !current.trim().isEmpty()) {
+            return;
+        }
+        to.click();
+        for (char c : query.toCharArray()) {
+            to.sendKeys(String.valueOf(c));
+        }
+        List<WebElement> suggestions = waitForAllVisible(autoSuggestList);
+        for (WebElement suggestion : suggestions) {
+            if (!suggestion.getText().trim().isEmpty() && suggestion.isDisplayed()) {
+                suggestion.click();
+                return;
+            }
+        }
+        throw new IllegalStateException("No suggestions found for To station query: " + query);
     }
 
     /** Make sure "Sort on Date" checkbox is checked. */
