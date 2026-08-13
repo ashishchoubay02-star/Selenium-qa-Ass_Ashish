@@ -10,6 +10,7 @@ Selenium automation framework built with the **Page Object Model** using **Java,
 5. Create an Excel file with expected station names (`ExpectedStations.xlsx`)
 6. Capture the dropdown list, write it to Excel and compare with the expected names (`test-output/StationComparison.xlsx`)
 7. Select **current date + 30 days** in "Sort on Date" from the calendar — fully **dynamic** (offset configurable with `-DdateOffset=30`)
+   - *Implementation note:* the live site only renders the "Sort on Date" checkbox/calendar once a **To** station is also selected (see the assignment's own screenshot, where To = "Mumbai Central" by default). This isn't a separate numbered step in the brief, so the code selects a To station (`ensureToStationSelected`) right before this step, purely so the site's panel appears — no additional assertion or requirement was added.
 8. Generate an **Extent report**
 
 ## Use Case 2 — OrangeHRM Login (Data-Driven)
@@ -59,5 +60,5 @@ mvn clean test -DdateOffset=45
 - Station comparison Excel: `test-output/StationComparison.xlsx`
 
 ## Notes
-- erail.in is a JS-heavy site; if its DOM changes, update the locators in `ErailHomePage.java` (`txtStationFrom`, autocomplete div, `txtDate`, calendar table).
+- erail.in is a JS-heavy site; if its DOM changes again, update the locators in `ErailHomePage.java`. As of this version the site uses `chkSelectDateOnly` for the Sort-on-Date checkbox (originally `chkSortOnDate` when this assignment was written), a date **button** inside `#tdDateFromTo` (originally a `txtDate` text input), and `div#divCalender` for the calendar (originally `divCalendar`).
 - OrangeHRM demo credentials: `Admin / admin123` (already present in `LoginData.xlsx`).
