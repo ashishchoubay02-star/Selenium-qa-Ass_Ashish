@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="QA Selenium Assignment Suite">
+    <listeners>
+        <listener class-name="com.qa.listeners.ExtentTestListener"/>
+    </listeners>
+
+    <test name="Use Case 1 - Erail">
+        <classes>
+            <class name="com.qa.tests.ErailTest"/>
+        </classes>
+    </test>
+
+    <test name="Use Case 2 - OrangeHRM Data Driven Login">
+        <classes>
+            <class name="com.qa.tests.OrangeHRMLoginTest"/>
+        </classes>
+    </test>
+</suite>
